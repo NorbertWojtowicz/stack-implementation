@@ -17,5 +17,5 @@ struct Student
 Student* createStudent();
 void printStudent(void* student);
 void saveStudentToFile(void* student, FILE* file);
-std::vector<Student*> loadStudentsFromFile(FILE* file);
+std::vector<void*> loadStudentsFromFile(FILE* file);
 void freeStudent(void* student);
