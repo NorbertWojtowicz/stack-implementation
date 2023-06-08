@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Messages.cpp" />
     <ClCompile Include="Stack.cpp" />
     <ClCompile Include="StackInterface.cpp" />
     <ClCompile Include="StackNode.cpp" />
     <ClCompile Include="Student.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Messages.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="StackInterface.h" />
     <ClInclude Include="StackNode.h" />

@@ -7,7 +7,7 @@ Student* createStudent()
 	Student* student = new Student();
 	std::cout << "Enter birth year: ";
 	std::cin >> student->birthYear;
-	std::cout << "Enter field of study:\n";
+	std::cout << "Enter field of study[0-7]:\n";
 	for (int i = 0; i <= OTHER; i++)
 	{
 		std::cout << i << " - " << FIELD_OF_STUDY_STRINGS[i] << std::endl;
@@ -35,6 +35,10 @@ void printStudent(void* student)
 void saveStudentToFile(void* student, FILE* file)
 {
 	Student* s = (Student*)student;
+	if (student == NULL || file == NULL)
+	{
+		return;
+	}
 	fwrite(&s->birthYear, sizeof(int), 1, file);
 	fwrite(&s->fieldOfStudy, sizeof(FIELD_OF_STUDY), 1, file);
 	size_t surnameLength = strlen(s->surname);
@@ -45,17 +49,21 @@ void saveStudentToFile(void* student, FILE* file)
 std::vector<void*> loadStudentsFromFile(FILE* file)
 {
 	std::vector<void*> students;
+	if (file == NULL)
+	{
+		return students;
+	}
 	while (!feof(file))
 	{
-		Student* s = new Student();
-		fread(&s->birthYear, sizeof(int), 1, file);
-		fread(&s->fieldOfStudy, sizeof(FIELD_OF_STUDY), 1, file);
+		Student* student = new Student();
+		fread(&student->birthYear, sizeof(int), 1, file);
+		fread(&student->fieldOfStudy, sizeof(FIELD_OF_STUDY), 1, file);
 		size_t surnameLength;
 		fread(&surnameLength, sizeof(size_t), 1, file);
-		s->surname = new char[surnameLength + 1];
-		fread(s->surname, sizeof(char), surnameLength, file);
-		s->surname[surnameLength] = '\0';
-		students.push_back(s);
+		student->surname = new char[surnameLength + 1];
+		fread(student->surname, sizeof(char), surnameLength, file);
+		student->surname[surnameLength] = '\0';
+		students.push_back(student);
 	}
 	students.pop_back();
 	return students;

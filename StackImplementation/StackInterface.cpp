@@ -1,4 +1,5 @@
 #include "StackInterface.h"
+#include "Messages.h"
 #include <cstdlib>
 #include "Student.h"
 #include <iostream>
@@ -6,14 +7,14 @@
 
 void printInterfaceMenu()
 {
-	printf("1. Push\n");
-	printf("2. Pop\n");
-	printf("3. Top\n");
-	printf("4. Is empty\n");
-	printf("5. Print\n");
-	printf("6. Save to file\n");
-	printf("7. Load from file\n");
-	printf("8. Exit\n");
+	printf("1. Add new student\n");
+	printf("2. Delete top student (pop())\n");
+	printf("3. Get student from the top (top())\n");
+	printf("4. Check if stack is empty\n");
+	printf("5. Print whole stack\n");
+	printf("6. Save Stack to the file\n");
+	printf("7. Load stack from the file\n");
+	printf("8. Free memory and exit\n");
 }
 
 void handleUserInput(Stack &stack)
@@ -28,11 +29,19 @@ void handleUserInput(Stack &stack)
 	case 2:
 		pop(&stack);
 		break;
-	case 3:
-		printStackNode(top(&stack), printStudent);
+	case 3: 
+	{
+		StackNode* student = top(&stack);
+		if (student == NULL)
+		{
+			printf("%s\n", getMessage(EMPTY_STACK));
+			break;
+		}
+		printStackNode(student, printStudent);
 		break;
+	}
 	case 4:
-		printf("%d\n", isEmpty(&stack));
+		printf("%s\n", isEmpty(&stack) == 1 ? "Stack is empty" : "Stack is not empty");
 		break;
 	case 5:
 		printStack(&stack, printStudent);
@@ -40,6 +49,10 @@ void handleUserInput(Stack &stack)
 	case 6:
 	{
 		FILE* file;
+		if (stack.top == NULL) {
+			printf("%s\n", getMessage(EMPTY_STACK));
+			break;
+		}
 		fopen_s(&file, "students.bin", "wb");
 		saveStackToFile(&stack, file, saveStudentToFile);
 		fclose(file);
@@ -50,7 +63,10 @@ void handleUserInput(Stack &stack)
 		FILE* file;
 		fopen_s(&file, "students.bin", "rb");
 		stack = loadStackFromFile(file, loadStudentsFromFile);
-		fclose(file);
+		if (file != NULL)
+		{
+			fclose(file);
+		}
 		break;
 	}
 	case 8:

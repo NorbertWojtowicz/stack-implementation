@@ -1,4 +1,5 @@
 #include "Stack.h"
+#include "Messages.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +24,7 @@ int pop(Stack* stack)
 {
 	if (stack->top == NULL)
 	{
+		printf("%s\n", getMessage(EMPTY_STACK));
 		return 0;
 	}
 	StackNode* node = stack->top;
@@ -53,6 +55,11 @@ void freeStack(Stack* stack)
 void printStack(Stack* stack, void (*print)(void*))
 {
 	StackNode* node = stack->top;
+	if (node == NULL)
+	{
+		printf("%s\n", getMessage(EMPTY_STACK));
+		return;
+	}
 	while (node != NULL)
 	{
 		printStackNode(node, print);
@@ -62,18 +69,34 @@ void printStack(Stack* stack, void (*print)(void*))
 
 void saveStackToFile(Stack* stack, FILE* file, void (*save)(void*, FILE*))
 {
+	if (file == NULL)
+	{
+		printf("%s\n", getMessage(FILE_NOT_FOUND));
+		return;
+	}
 	StackNode* node = stack->top;
+	if (node == NULL)
+	{
+		printf("%s\n", getMessage(EMPTY_STACK));
+		return;
+	}
 	while (node != NULL)
 	{
 		save(node->data, file);
 		node = node->next;
 	}
+	printf("Stack saved to file\n");
 }
 
 Stack loadStackFromFile(FILE* file, std::vector<void*>(*load)(FILE*))
 {
 	Stack stack = createStack();
 	std::vector<void*> data = load(file);
+	if (data.empty())
+	{
+		printf("%s\n", getMessage(FILE_NOT_FOUND));
+		return stack;
+	}
 	for (int i = 0; i < data.size(); i++)
 	{
 		push(&stack, data[i]);
