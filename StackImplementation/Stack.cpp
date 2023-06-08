@@ -30,6 +30,7 @@ int pop(Stack* stack)
 	StackNode* node = stack->top;
 	stack->top = stack->top->next;
 	delete node;
+	printf("Element popped\n");
 	return 1;
 }
 
@@ -45,11 +46,15 @@ StackNode* top(Stack* stack)
 
 void freeStack(Stack* stack)
 {
-	while (stack->top != NULL)
+	StackNode* node = stack->top;
+	while (node != NULL)
 	{
-		pop(stack);
+		StackNode* next = node->next;
+		free(node);
+		node = next;
 	}
-	delete stack;
+	stack->top = NULL;
+	printf("Stack freed\n");
 }
 
 void printStack(Stack* stack, void (*print)(void*))
@@ -101,5 +106,6 @@ Stack loadStackFromFile(FILE* file, std::vector<void*>(*load)(FILE*))
 	{
 		push(&stack, data[i]);
 	}
+	printf("Stack loaded from file\n");
 	return stack;
 }
