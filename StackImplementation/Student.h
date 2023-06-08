@@ -19,3 +19,6 @@ void printStudent(void* student);
 void saveStudentToFile(void* student, FILE* file);
 std::vector<void*> loadStudentsFromFile(FILE* file);
 void freeStudent(void* student);
+int compareStudentsBySurname(void* student1, char* student2);
+int compareStudentsByBirthYear(void* student1, int student2);
+int compareStudentsByFieldOfStudy(void* student1, int student2);

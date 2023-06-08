@@ -14,7 +14,10 @@ void printInterfaceMenu()
 	printf("5. Print whole stack\n");
 	printf("6. Save Stack to the file\n");
 	printf("7. Load stack from the file\n");
-	printf("8. Free memory and exit\n");
+	printf("8. Find students by surname\n");
+	printf("9. Find students by birth year\n");
+	printf("10. Find students by field of study\n");
+	printf("11. Free memory and exit\n");
 }
 
 void handleUserInput(Stack &stack)
@@ -70,7 +73,42 @@ void handleUserInput(Stack &stack)
 		break;
 	}
 	case 8:
+	{
+		char surname[20];
+		printf("Enter surname: ");
+		scanf_s("%s", surname, 20);
+		Stack foundStudents = findByUsername(&stack, surname, compareStudentsBySurname);
+		printSearchResult(foundStudents);
+		freeStack(&foundStudents);
+		break;
+	}
+	case 9:
+	{
+		int birthYear;
+		printf("Enter birth year: ");
+		scanf_s("%d", &birthYear);
+		Stack foundStudents = findByYear(&stack, birthYear, compareStudentsByBirthYear);
+		printSearchResult(foundStudents);
+		freeStack(&foundStudents);
+		break;
+	}
+	case 10:
+	{
+		int fieldOfStudy;
+		printf("Enter field of study[0-7]:\n");
+		for (int i = 0; i < 8; i++)
+		{
+			printf("%d. %s\n", i, FIELD_OF_STUDY_STRINGS[i]);
+		}
+		scanf_s("%d", &fieldOfStudy);
+		Stack foundStudents = findByFieldOfStudy(&stack, fieldOfStudy, compareStudentsByFieldOfStudy);
+		printSearchResult(foundStudents);
+		freeStack(&foundStudents);
+		break;
+	}
+	case 11:
 		freeStack(&stack);
+		printf("Stack freed\n");
 		exit(0);
 		break;
 	default:
@@ -87,5 +125,18 @@ void runInterface()
 	{
 		printInterfaceMenu();
 		handleUserInput(stack);
+	}
+}
+
+void printSearchResult(Stack stack)
+{
+	if (stack.top != NULL)
+	{
+		printf("\nFound following students:\n");
+		printStack(&stack, printStudent);
+	}
+	else
+	{
+		printf("No students found\n");
 	}
 }

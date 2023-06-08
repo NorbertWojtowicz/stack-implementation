@@ -1,6 +1,7 @@
 #include "Student.h"
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 Student* createStudent()
 {
@@ -29,7 +30,7 @@ void printStudent(void* student)
 	Student* s = (Student*)student;
 	std::cout << "Birth year: " << s->birthYear << std::endl;
 	std::cout << "Field of study: " << FIELD_OF_STUDY_STRINGS[s->fieldOfStudy] << std::endl;
-	std::cout << "Surname: " << s->surname << std::endl;
+	std::cout << "Surname: " << s->surname << std::endl << std::endl;
 }
 
 void saveStudentToFile(void* student, FILE* file)
@@ -74,4 +75,22 @@ void freeStudent(void* student)
 	Student* s = (Student*)student;
 	delete[] s->surname;
 	delete s;
+}
+
+int compareStudentsBySurname(void* student1, char* student2Surname)
+{
+	Student* s1 = (Student*)student1;
+	return strcmp(s1->surname, student2Surname) == 0;
+}
+
+int compareStudentsByBirthYear(void* student1, int student2BirthYear)
+{
+	Student* s1 = (Student*)student1;
+	return s1->birthYear == student2BirthYear;
+}
+
+int compareStudentsByFieldOfStudy(void* student1, int student2FieldOfStudy)
+{
+	Student* s1 = (Student*)student1;
+	return s1->fieldOfStudy == student2FieldOfStudy;
 }

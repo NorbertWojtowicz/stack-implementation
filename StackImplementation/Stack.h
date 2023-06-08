@@ -16,3 +16,6 @@ void freeStack(Stack* stack);
 void printStack(Stack* stack, void (*print)(void*));
 void saveStackToFile(Stack* stack, FILE* file, void (*save)(void*, FILE*));
 Stack loadStackFromFile(FILE* file, std::vector<void*>(*load)(FILE*));
+Stack findByUsername(Stack* stack, char* surname, int (*compare)(void*, char*));
+Stack findByYear(Stack* stack, int year, int (*compare)(void*, int));
+Stack findByFieldOfStudy(Stack* stack, int year, int (*compare)(void*, int));

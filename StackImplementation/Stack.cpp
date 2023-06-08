@@ -1,5 +1,6 @@
 #include "Stack.h"
 #include "Messages.h"
+#include "Student.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -54,7 +55,6 @@ void freeStack(Stack* stack)
 		node = next;
 	}
 	stack->top = NULL;
-	printf("Stack freed\n");
 }
 
 void printStack(Stack* stack, void (*print)(void*))
@@ -108,4 +108,49 @@ Stack loadStackFromFile(FILE* file, std::vector<void*>(*load)(FILE*))
 	}
 	printf("Stack loaded from file\n");
 	return stack;
+}
+
+Stack findByUsername(Stack* stack, char* surname, int (*compare)(void*, char*))
+{
+	Stack result = createStack();
+	StackNode* node = stack->top;
+	while (node != NULL)
+	{
+		if (compare(node->data, surname))
+		{
+			push(&result, node->data);
+		}
+		node = node->next;
+	}
+	return result;
+}
+
+Stack findByYear(Stack* stack, int year, int (*compare)(void*, int))
+{
+	Stack result = createStack();
+	StackNode* node = stack->top;
+	while (node != NULL)
+	{
+		if (compare(node->data, year))
+		{
+			push(&result, node->data);
+		}
+		node = node->next;
+	}
+	return result;
+}
+
+Stack findByFieldOfStudy(Stack* stack, int year, int (*compare)(void*, int))
+{
+	Stack result = createStack();
+	StackNode* node = stack->top;
+	while (node != NULL)
+	{
+		if (compare(node->data, year))
+		{
+			push(&result, node->data);
+		}
+		node = node->next;
+	}
+	return result;
 }
