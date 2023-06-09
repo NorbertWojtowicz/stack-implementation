@@ -79,7 +79,7 @@ void handleUserInput(Stack &stack)
 		scanf_s("%s", surname, 20);
 		Stack foundStudents = findByUsername(&stack, surname, compareStudentsBySurname);
 		printSearchResult(foundStudents);
-		freeStack(&foundStudents);
+		freeStack(&foundStudents, freeStudent);
 		break;
 	}
 	case 9:
@@ -89,7 +89,7 @@ void handleUserInput(Stack &stack)
 		scanf_s("%d", &birthYear);
 		Stack foundStudents = findByYear(&stack, birthYear, compareStudentsByBirthYear);
 		printSearchResult(foundStudents);
-		freeStack(&foundStudents);
+		freeStack(&foundStudents, freeStudent);
 		break;
 	}
 	case 10:
@@ -103,11 +103,11 @@ void handleUserInput(Stack &stack)
 		scanf_s("%d", &fieldOfStudy);
 		Stack foundStudents = findByFieldOfStudy(&stack, fieldOfStudy, compareStudentsByFieldOfStudy);
 		printSearchResult(foundStudents);
-		freeStack(&foundStudents);
+		freeStack(&foundStudents, freeStudent);
 		break;
 	}
 	case 11:
-		freeStack(&stack);
+		freeStack(&stack, freeStudent);
 		printf("Stack freed\n");
 		exit(0);
 		break;

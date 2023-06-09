@@ -45,13 +45,14 @@ StackNode* top(Stack* stack)
 	return stack->top;
 }
 
-void freeStack(Stack* stack)
+void freeStack(Stack* stack, void (*freeEl)(void*))
 {
 	StackNode* node = stack->top;
 	while (node != NULL)
 	{
 		StackNode* next = node->next;
-		free(node);
+		freeEl(node->data);
+		delete node;
 		node = next;
 	}
 	stack->top = NULL;
@@ -106,6 +107,16 @@ Stack loadStackFromFile(FILE* file, std::vector<void*>(*load)(FILE*))
 	{
 		push(&stack, data[i]);
 	}
+	StackNode* node = stack.top;
+	StackNode* prev = NULL;
+	while (node != NULL)
+	{
+		StackNode* next = node->next;
+		node->next = prev;
+		prev = node;
+		node = next;
+	}
+	stack.top = prev;
 	printf("Stack loaded from file\n");
 	return stack;
 }
